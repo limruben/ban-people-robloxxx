@@ -1,1 +1,16 @@
-/b add, player, ond
+function onSay(cid, words, param)
+	local t = string.explode(string.lower(param), ",")
+	if not t[1] then
+                doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command requires param.") return true
+	end
+        local player = getPlayerByNameWildcard(t[1]) 
+        if(not player)then 
+                doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player not found.") return true 
+        end
+        local days = not tonumber(t[2]) and 1 or tonumber(t[2])
+		doBroadcastMessage(getCreatureName(player).." was banned by "..getCreatureName(cid))
+		doAddIpBanishment(getPlayerIp(player), days * 24 * 60 * 60)
+		doRemoveCreature(player)
+		
+	return true
+end
